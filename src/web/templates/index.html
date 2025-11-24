@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicCreator - AI Music Composition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 MusicCreator</h1>
+            <p class="tagline">Create sheet music and audio in the style of any composer</p>
+            <nav>
+                <a href="/" class="nav-link active">Generate</a>
+                <a href="/viewer" class="nav-link">My Compositions</a>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Generation Form -->
+            <section class="composer-section">
+                <h2>Select a Composer</h2>
+                <select id="composer" class="form-control">
+                    <option value="">Loading composers...</option>
+                </select>
+                <p class="help-text">Or type a custom composer name below</p>
+                <input type="text" id="custom-composer" class="form-control" placeholder="e.g., Brahms, Ravel, Satie">
+            </section>
+
+            <section class="instruments-section">
+                <h2>Choose Instruments</h2>
+                <div class="instrument-grid">
+                    <label><input type="checkbox" name="instrument" value="piano" checked> Piano</label>
+                    <label><input type="checkbox" name="instrument" value="violin"> Violin</label>
+                    <label><input type="checkbox" name="instrument" value="viola"> Viola</label>
+                    <label><input type="checkbox" name="instrument" value="cello"> Cello</label>
+                    <label><input type="checkbox" name="instrument" value="flute"> Flute</label>
+                    <label><input type="checkbox" name="instrument" value="clarinet"> Clarinet</label>
+                    <label><input type="checkbox" name="instrument" value="oboe"> Oboe</label>
+                    <label><input type="checkbox" name="instrument" value="bassoon"> Bassoon</label>
+                    <label><input type="checkbox" name="instrument" value="trumpet"> Trumpet</label>
+                    <label><input type="checkbox" name="instrument" value="guitar"> Guitar</label>
+                    <label><input type="checkbox" name="instrument" value="harp"> Harp</label>
+                    <label><input type="checkbox" name="instrument" value="voice"> Voice</label>
+                </div>
+            </section>
+
+            <section class="difficulty-section">
+                <h2>Difficulty Level</h2>
+                <div class="radio-group">
+                    <label><input type="radio" name="difficulty" value="beginner"> Beginner</label>
+                    <label><input type="radio" name="difficulty" value="intermediate" checked> Intermediate</label>
+                    <label><input type="radio" name="difficulty" value="advanced"> Advanced</label>
+                    <label><input type="radio" name="difficulty" value="expert"> Expert</label>
+                </div>
+            </section>
+
+            <section class="mood-section">
+                <h2>Mood (Optional)</h2>
+                <select id="mood" class="form-control">
+                    <option value="">Auto (from composer style)</option>
+                    <option value="happy">😊 Happy</option>
+                    <option value="sad">😢 Sad</option>
+                    <option value="melancholic">😔 Melancholic</option>
+                    <option value="dramatic">🎭 Dramatic</option>
+                    <option value="peaceful">☮️ Peaceful</option>
+                    <option value="energetic">⚡ Energetic</option>
+                    <option value="mysterious">🔮 Mysterious</option>
+                    <option value="triumphant">🏆 Triumphant</option>
+                    <option value="romantic">💕 Romantic</option>
+                    <option value="playful">🎪 Playful</option>
+                </select>
+            </section>
+
+            <section class="advanced-section">
+                <h2>Advanced Options <button type="button" id="toggle-advanced" class="btn-link">Show</button></h2>
+                <div id="advanced-options" style="display: none;">
+                    <div class="form-group">
+                        <label for="time-signature">Time Signature</label>
+                        <select id="time-signature" class="form-control">
+                            <option value="">Auto (from composer style)</option>
+                            <option value="4/4">4/4 (Common time)</option>
+                            <option value="3/4">3/4 (Waltz)</option>
+                            <option value="6/8">6/8 (Compound duple)</option>
+                            <option value="2/4">2/4 (March)</option>
+                            <option value="5/4">5/4 (Jazz/Modern)</option>
+                            <option value="12/8">12/8 (Slow blues)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="key-signature">Key Signature</label>
+                        <select id="key-signature" class="form-control">
+                            <option value="">Auto (from composer style)</option>
+                            <optgroup label="Major Keys">
+                                <option value="C">C Major</option>
+                                <option value="G">G Major</option>
+                                <option value="D">D Major</option>
+                                <option value="A">A Major</option>
+                                <option value="E">E Major</option>
+                                <option value="F">F Major</option>
+                                <option value="Bb">B♭ Major</option>
+                                <option value="Eb">E♭ Major</option>
+                            </optgroup>
+                            <optgroup label="Minor Keys">
+                                <option value="a">A Minor</option>
+                                <option value="e">E Minor</option>
+                                <option value="b">B Minor</option>
+                                <option value="f#">F# Minor</option>
+                                <option value="c#">C# Minor</option>
+                                <option value="d">D Minor</option>
+                                <option value="g">G Minor</option>
+                                <option value="c">C Minor</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tempo">Tempo (BPM)</label>
+                        <input type="number" id="tempo" class="form-control" placeholder="Auto (e.g., 120)" min="40" max="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="num-compositions">Number of Compositions</label>
+                        <input type="number" id="num-compositions" class="form-control" value="3" min="1" max="10">
+                    </div>
+                </div>
+            </section>
+
+            <section class="action-section">
+                <button id="generate-btn" class="btn btn-primary">
+                    <span id="btn-text">🎼 Generate Music</span>
+                    <span id="btn-spinner" class="spinner" style="display: none;"></span>
+                </button>
+                <div id="status-message" class="status-message"></div>
+                <div id="progress-message" class="progress-message" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <p id="progress-text"></p>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="results-section" style="display: none;">
+                <h2>✨ Generated Compositions</h2>
+                <div id="results-list" class="results-grid"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 MusicCreator | Open Source | <a href="https://github.com/vishc0/MusicCreator" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

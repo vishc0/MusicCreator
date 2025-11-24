@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Compositions - MusicCreator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- OpenSheetMusicDisplay for sheet music rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.6/build/opensheetmusicdisplay.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 MusicCreator</h1>
+            <p class="tagline">My Compositions</p>
+            <nav>
+                <a href="/" class="nav-link">Generate</a>
+                <a href="/viewer" class="nav-link active">My Compositions</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="compositions-section">
+                <h2>📚 Your Generated Compositions</h2>
+                <div id="compositions-list" class="compositions-grid">
+                    <p class="loading">Loading compositions...</p>
+                </div>
+            </section>
+
+            <!-- Sheet Music Viewer Modal -->
+            <div id="viewer-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modal-title">Sheet Music</h2>
+                        <button class="close-btn" onclick="closeViewer()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="sheet-music-container" class="sheet-music-container"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="closeViewer()" class="btn btn-secondary">Close</button>
+                        <button onclick="downloadCurrentSheet()" class="btn btn-primary">Download MusicXML</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio Player Modal -->
+            <div id="player-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="player-title">Audio Player</h2>
+                        <button class="close-btn" onclick="closePlayer()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="audio-player">
+                            <div class="player-controls">
+                                <button id="play-pause-btn" class="control-btn" onclick="togglePlay()">
+                                    <span id="play-icon">▶️</span>
+                                </button>
+                                <button class="control-btn" onclick="stopAudio()">⏹️</button>
+                            </div>
+                            <div class="player-progress">
+                                <input type="range" id="progress-slider" class="progress-slider" min="0" max="100" value="0">
+                                <div class="time-display">
+                                    <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+                                </div>
+                            </div>
+                            <div class="player-volume">
+                                <span>🔊</span>
+                                <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="70">
+                            </div>
+                            <audio id="audio-player" preload="metadata"></audio>
+                        </div>
+                        <p class="help-text">Note: MIDI files may require a browser plugin or external player for best audio quality.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="closePlayer()" class="btn btn-secondary">Close</button>
+                        <a id="download-audio-btn" class="btn btn-primary" download>Download MIDI</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 MusicCreator | Open Source | <a href="https://github.com/vishc0/MusicCreator" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+</body>
+</html>
