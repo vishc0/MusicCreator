@@ -1,0 +1,18 @@
+# Code Owners
+# These users will be automatically requested for review when someone opens a pull request
+
+# Default owners for everything in the repo
+* @vishc0
+
+# Documentation
+/docs/ @vishc0
+
+# Configuration files
+/config/ @vishc0
+/.github/ @vishc0
+
+# Core modules
+/src/ @vishc0
+
+# Tests
+/tests/ @vishc0

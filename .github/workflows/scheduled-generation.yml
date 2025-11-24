@@ -1,0 +1,55 @@
+name: Scheduled Music Generation
+
+on:
+  schedule:
+    # Run weekly on Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  generate-weekly-composer:
+    name: Generate Music for Featured Composer
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        composer:
+          - 'Edvard Grieg'
+          - 'Johann Sebastian Bach'
+          - 'Wolfgang Amadeus Mozart'
+          - 'Claude Debussy'
+          - 'Ludwig van Beethoven'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Generate music for ${{ matrix.composer }}
+      env:
+        HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+      run: |
+        python src/main.py --composer "${{ matrix.composer }}" --output-dir examples/${{ matrix.composer }}
+    
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: weekly-compositions
+        path: examples/
+        retention-days: 90
+    
+    - name: Publish to GitHub Pages
+      if: github.ref == 'refs/heads/main' && secrets.ENABLE_PUBLISH == 'true'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./examples
+        keep_files: true

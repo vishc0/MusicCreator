@@ -1,0 +1,184 @@
+# MusicCreator Configuration File
+# Copy this file to config.yaml and customize as needed
+
+# Composer research settings
+research:
+  # Data sources to use for composer research
+  sources:
+    - wikipedia
+    - imslp
+    - classical_archives
+  
+  # Maximum number of results to fetch from each source
+  max_results: 10
+  
+  # Cache settings
+  cache:
+    enabled: true
+    ttl_days: 30  # Time to live for cached data
+    directory: .cache/research
+
+# Style analysis settings
+analysis:
+  # LLM model to use for style analysis
+  # Options: mistralai/Mistral-7B-Instruct-v0.2, meta-llama/Llama-2-7b-chat-hf
+  model: "mistralai/Mistral-7B-Instruct-v0.2"
+  
+  # Alternative models (will be used if primary fails)
+  fallback_models:
+    - "meta-llama/Llama-2-7b-chat-hf"
+    - "HuggingFaceH4/zephyr-7b-beta"
+  
+  # Generation parameters
+  temperature: 0.7
+  max_tokens: 2000
+  top_p: 0.9
+  
+  # Cache settings
+  cache:
+    enabled: true
+    ttl_days: 90  # Style analyses are stable
+    directory: .cache/analysis
+
+# Music generation settings
+generation:
+  # Number of compositions to generate
+  num_compositions: 5
+  
+  # Composition parameters
+  length_measures: 32  # Length in measures
+  time_signature: "4/4"  # Default time signature (can be overridden by style)
+  key: "auto"  # auto-detect from composer style, or specify like "C major"
+  
+  # Generation quality
+  temperature: 0.8  # Higher = more creative, lower = more conservative
+  iterations: 3  # Number of refinement iterations
+  
+  # Constraints
+  constraints:
+    min_pitch: 48  # MIDI note number (C3)
+    max_pitch: 84  # MIDI note number (C6)
+    min_duration: 0.25  # Quarter note
+    max_duration: 4.0  # Whole note
+  
+  # Output settings
+  output_dir: "outputs/compositions"
+
+# Sheet music settings
+sheet_music:
+  # Output format: musicxml, lilypond, pdf, or all
+  format: "pdf"
+  
+  # MusicXML settings
+  musicxml:
+    include_annotations: true
+    include_metadata: true
+  
+  # LilyPond settings
+  lilypond:
+    paper_size: "letter"  # letter, a4, legal
+    orientation: "portrait"  # portrait, landscape
+    staff_size: 20
+    include_title: true
+    include_composer: true
+  
+  # PDF rendering
+  pdf:
+    quality: "high"  # low, medium, high
+    embed_fonts: true
+  
+  # Output settings
+  output_dir: "outputs/sheet_music"
+
+# Audio generation settings
+audio:
+  # Output format: midi, wav, mp3, or all
+  format: "mp3"
+  
+  # MIDI settings
+  midi:
+    tempo: 120  # BPM (can be overridden by composer style)
+    velocity: 80  # Note velocity (0-127)
+  
+  # Audio synthesis settings
+  synthesis:
+    sample_rate: 44100  # 44.1kHz (CD quality)
+    bit_depth: 16
+    soundfont: "default"  # Path to .sf2 file or "default" for built-in
+  
+  # Export settings
+  export:
+    normalize: true  # Normalize audio levels
+    fade_in: 0.1  # Fade in duration (seconds)
+    fade_out: 0.5  # Fade out duration (seconds)
+  
+  # Output settings
+  output_dir: "outputs/audio"
+
+# Web interface settings
+web:
+  # Server configuration
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+  
+  # Features
+  enable_gallery: true
+  enable_download: true
+  max_concurrent_requests: 3
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_hour: 10
+
+# Publishing settings
+publishing:
+  # Enable automatic publishing
+  enabled: false
+  
+  # Publishing targets
+  targets:
+    - github_pages
+  
+  # GitHub Pages settings
+  github_pages:
+    branch: "gh-pages"
+    directory: "docs"
+    include_examples: true
+  
+  # Output organization
+  output_dir: "examples"
+  organize_by_composer: true
+
+# Logging settings
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Log files
+  file:
+    enabled: true
+    path: "logs/musiccreator.log"
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+
+# Performance settings
+performance:
+  # Parallel processing
+  max_workers: 4  # Number of parallel workers
+  
+  # Memory management
+  max_cache_size_mb: 500
+  clear_cache_on_start: false
+  
+  # Timeouts
+  api_timeout: 30  # Seconds
+  generation_timeout: 300  # Seconds
+
+# Development settings
+development:
+  # Enable debug features
+  verbose: false
+  save_intermediate: false  # Save intermediate processing steps
+  profile: false  # Enable performance profiling
