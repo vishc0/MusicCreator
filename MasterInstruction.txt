@@ -1,0 +1,66 @@
+# MusicCreator
+this app creates sheet music and audio in the style of any composer you want.
+
+Master Prompt for GitHub Copilot: End-to-End Project Delivery
+Project Title: MusicCreator
+Project Vision:
+this app creates sheet music and audio in the style of any composer you want. 
+
+1. Requirements & Planning
+    • Analyze the project vision and break it down into major components and deliverables.
+    • Identify and document:
+        ○ Key features and user stories
+        ○ Required integrations (APIs, external services, OSS libraries)
+        ○ Security, privacy, and cost constraints
+        ○ Target platforms (GitHub Actions, GitLab CI, etc.)
+    • Propose a high-level architecture diagram and directory structure.
+    • Create a detailed, actionable TODO list and keep it updated throughout the project.
+
+2. Scaffold & Initial Setup
+    • Scaffold the repository with:
+        ○ Minimal runnable code for each major component (ingestors, summarizer, formatter, publisher, TTS, etc.)
+        ○ Example configuration files (e.g., topics.yaml, .env.example)
+        ○ CI/CD workflows (e.g., schedule-pipeline.yml)
+        ○ Documentation: README.md, CONFIGURE.md, CONTRIBUTING.md
+        ○ Issue and PR templates, CODEOWNERS, and security guidance
+    • Ensure all code is runnable and testable from GitHub (web UI, Codespaces, or Actions).
+
+3. Iterative Development
+    • For each feature or improvement:
+        ○ Create a new branch and open a Pull Request with a clear description and checklist.
+        ○ Add or update tests, documentation, and configuration as needed.
+        ○ Use the /run-pipeline PR comment command to trigger CI and validate outputs.
+        ○ Upload artifacts for review and, if enabled, publish outputs (e.g., to Internet Archive or GitHub Pages).
+    • Keep the TODO list and project board up to date.
+
+4. Security, Secrets, and Publishing
+    • Guide the user to add required secrets via GitHub Settings (never commit secrets).
+    • Implement publishing steps (e.g., Internet Archive upload, GitHub Pages deploy) guarded by explicit secrets or toggles (e.g., ENABLE_PUBLISH).
+    • Document all required secrets and their usage in CONFIGURE.md.
+
+5. Collaboration & Handover
+    • Use PR and issue templates to ensure clear communication and review.
+    • Assign reviewers and use CODEOWNERS for default ownership.
+    • Provide a final checklist and release notes when the product is ready for handover.
+
+6. Fillable Details
+    •  Project Title: MusicCreator
+    •  Vision/Goal: Creates Music in the style of the composer given.
+    •  Key Features: it is able to research online about the composer and his work, understadn his style and start crreating 5 sample music compositions in his style, make sheet music documents and audio files.
+    •  Integrations/APIs: huggingface LLMs api, and other free tier LLM apis.
+    •  Security/Privacy Constraints: _________this code is private, the app is accessible to everyone online.
+    •  Cost/Hosting Constraints: cost must be zero cost options, I will let github copilot decide design and tools and platfroms to use. 
+        ○ I will be there to configure any external things or accounts if required. 
+    •  Target Platforms: I will let github copilot agent decide this
+    •  Initial Directory Structure: I will let github copilot agent decide this
+    •  Required Secrets: I will be there to configure any external things or accounts if required. Ask in the journey and I wil provide these. 
+    •  Example Topics/Inputs: 
+        ○ Composer: edvard greig
+    •  Publishing Targets: I will let github copilot agent decide this
+
+Instructions for Copilot:
+    • Treat this as the master plan for the project.
+    • At each step, update the TODO list, commit code, and document decisions in the repo.
+    • Use GitHub Actions and web UI for all automation and collaboration.
+    • Ask for clarification or missing details as needed, but proceed proactively with best practices.
+Deliver a finished, production-ready product with clear documentation and handover instructions.
