@@ -45,19 +45,37 @@ generation:
   # Number of compositions to generate
   num_compositions: 5
   
+  # Instruments to compose for (can be overridden via CLI)
+  # Options: piano, violin, viola, cello, flute, clarinet, oboe, bassoon,
+  #          trumpet, trombone, french horn, tuba, guitar, harp,
+  #          voice, soprano, alto, tenor, bass
+  instruments:
+    - piano
+  
+  # Difficulty level (can be overridden via CLI)
+  # Options: beginner, intermediate, advanced, expert
+  difficulty: intermediate
+  
+  # Advanced options (can be overridden via CLI)
+  # Mood/tone of the music (optional)
+  # Options: happy, sad, melancholic, dramatic, peaceful, energetic,
+  #          mysterious, triumphant, romantic, playful
+  # mood: peaceful
+  
   # Composition parameters
   length_measures: 32  # Length in measures
-  time_signature: "4/4"  # Default time signature (can be overridden by style)
-  key: "auto"  # auto-detect from composer style, or specify like "C major"
+  time_signature: "4/4"  # Default time signature (can be overridden by style or CLI)
+  key: "auto"  # auto-detect from composer style, or specify like "C major" (can be overridden by CLI)
+  # tempo: 120  # Optional: Set specific tempo in BPM (otherwise auto-selected)
   
   # Generation quality
   temperature: 0.8  # Higher = more creative, lower = more conservative
   iterations: 3  # Number of refinement iterations
   
-  # Constraints
+  # Constraints (will be adjusted per instrument and difficulty)
   constraints:
-    min_pitch: 48  # MIDI note number (C3)
-    max_pitch: 84  # MIDI note number (C6)
+    min_pitch: 48  # MIDI note number (C3) - overridden by instrument
+    max_pitch: 84  # MIDI note number (C6) - overridden by instrument
     min_duration: 0.25  # Quarter note
     max_duration: 4.0  # Whole note
   
@@ -68,6 +86,11 @@ generation:
 sheet_music:
   # Output format: musicxml, lilypond, pdf, or all
   format: "pdf"
+  
+  # Software preference for rendering (can be overridden via CLI)
+  # Options: musescore, lilypond, auto
+  # auto will detect and use available software
+  software: "auto"
   
   # MusicXML settings
   musicxml:
@@ -81,6 +104,12 @@ sheet_music:
     staff_size: 20
     include_title: true
     include_composer: true
+  
+  # MuseScore settings
+  musescore:
+    # Path to MuseScore executable (optional, auto-detected if not specified)
+    # executable: "/usr/bin/musescore"
+    quality: "high"
   
   # PDF rendering
   pdf:

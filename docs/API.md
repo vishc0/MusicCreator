@@ -13,26 +13,107 @@ python src/main.py --composer "Composer Name" [OPTIONS]
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--composer` | string | required | Name of the composer (e.g., "Edvard Grieg") |
+| `--instruments` | list | `['piano']` | Instruments to compose for. Multiple can be specified (e.g., `piano violin flute`) |
+| `--difficulty` | string | `intermediate` | Difficulty level: `beginner`, `intermediate`, `advanced`, or `expert` |
 | `--output-dir` | string | `outputs` | Output directory for generated files |
 | `--config` | string | `config/config.yaml` | Path to configuration file |
 | `--num-compositions` | integer | 5 | Number of compositions to generate |
 | `--dry-run` | flag | false | Run without generating files (testing) |
 | `--verbose` | flag | false | Enable verbose logging |
 
+### Advanced Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--software` | string | `auto` | Sheet music software: `musescore`, `lilypond`, or `auto` (auto-detect) |
+| `--mood` | string | none | Mood/tone of music (e.g., happy, sad, dramatic, peaceful, energetic, melancholic, mysterious, triumphant, romantic, playful) |
+| `--time-signature` | string | style-based | Time signature (e.g., `4/4`, `3/4`, `6/8`, `5/4`). Overrides composer style. |
+| `--key-signature` | string | style-based | Key signature (e.g., `"C major"`, `"A minor"`, `"Eb"`). Overrides composer style. |
+| `--tempo` | integer | style-based | Tempo in BPM (e.g., 60, 120, 144). Overrides composer style. |
+
+### Supported Instruments
+
+- **Keyboard**: piano, organ, harpsichord
+- **Strings**: violin, viola, cello, bass, guitar, harp
+- **Woodwinds**: flute, clarinet, oboe, bassoon
+- **Brass**: trumpet, trombone, french horn, tuba
+- **Voice**: voice, soprano, alto, tenor, bass
+
+### Difficulty Levels
+
+- **Beginner**: Simple rhythms (whole, half, quarter notes), limited pitch range, simple intervals, few chords
+- **Intermediate**: Adds eighth notes, moderate pitch range, more intervals, some chords
+- **Advanced**: Adds sixteenth notes, wider pitch range, complex intervals, more chords, seventh chords
+- **Expert**: Includes dotted rhythms, full instrument range, large intervals, complex chords (diminished, augmented, etc.)
+
+### Mood Options
+
+Each mood affects the musical characteristics:
+
+- **Happy**: Major keys, faster tempo, simple rhythms, forte dynamics
+- **Sad**: Minor keys, slower tempo, simple rhythms, piano dynamics
+- **Melancholic**: Minor keys, moderate tempo, moderate complexity, soft dynamics
+- **Dramatic**: Any key, fast tempo, complex rhythms, very loud dynamics
+- **Peaceful**: Major keys, slow tempo, simple rhythms, very soft dynamics
+- **Energetic**: Major keys, very fast tempo, complex rhythms, loud dynamics
+- **Mysterious**: Minor keys, moderate tempo, moderate complexity, soft dynamics
+- **Triumphant**: Major keys, moderate-fast tempo, complex rhythms, very loud dynamics
+- **Romantic**: Major keys, slow-moderate tempo, moderate complexity, moderate dynamics
+- **Playful**: Major keys, fast tempo, moderate complexity, moderate dynamics
+
+### Software Options
+
+- **musescore**: Use MuseScore for PDF rendering (requires MuseScore installation)
+- **lilypond**: Use LilyPond for high-quality engraving (requires LilyPond installation)
+- **auto**: Automatically detect and use available software (default)
+
 ### Examples
 
 ```bash
-# Generate 5 compositions for Edvard Grieg
+# Generate 5 compositions for Edvard Grieg (piano, intermediate)
 python src/main.py --composer "Edvard Grieg"
 
-# Generate 3 compositions with verbose output
-python src/main.py --composer "Mozart" --num-compositions 3 --verbose
+# Generate for multiple instruments
+python src/main.py --composer "Mozart" --instruments violin viola cello
+
+# Generate beginner-level piano music
+python src/main.py --composer "Bach" --instruments piano --difficulty beginner
+
+# Generate expert-level chamber music
+python src/main.py --composer "Beethoven" --instruments piano violin cello --difficulty expert --num-compositions 3
+
+# Generate for full woodwind quintet
+python src/main.py --composer "Debussy" --instruments flute oboe clarinet bassoon --difficulty advanced
+
+# Advanced: Dramatic music in C minor at 144 BPM
+python src/main.py --composer "Chopin" \
+  --instruments piano \
+  --difficulty advanced \
+  --mood dramatic \
+  --key-signature "C minor" \
+  --tempo 144 \
+  --software musescore
+
+# Advanced: Peaceful waltz in 3/4 time
+python src/main.py --composer "Strauss" \
+  --instruments piano violin \
+  --difficulty intermediate \
+  --mood peaceful \
+  --time-signature 3/4 \
+  --tempo 168
+
+# Advanced: Happy baroque music using LilyPond
+python src/main.py --composer "Vivaldi" \
+  --instruments violin cello \
+  --difficulty advanced \
+  --mood happy \
+  --software lilypond
 
 # Test configuration without generating files
 python src/main.py --composer "Bach" --dry-run
 
 # Specify custom output directory
-python src/main.py --composer "Debussy" --output-dir ./my-music
+python src/main.py --composer "Grieg" --instruments piano --output-dir ./my-music
 ```
 
 ## Python API
@@ -98,17 +179,49 @@ style_profile = analyzer.analyze(composer_data)
 ```python
 from src.generation.generator import MusicGenerator
 
-# Initialize generator
+# Initialize generator with instruments and difficulty
 generator = MusicGenerator(config={
     'num_compositions': 5,
     'length_measures': 32,
-    'temperature': 0.8
+    'temperature': 0.8,
+    'instruments': ['piano', 'violin'],
+    'difficulty': 'advanced'
 })
 
 # Generate compositions
 compositions = generator.generate(style_profile, num_compositions=5)
 
-# Returns: List of music21.stream.Score objects
+# Returns: List of music21.stream.Score objects with multiple parts
+```
+
+**Configuration Options:**
+
+- `instruments`: List of instrument names (default: `['piano']`)
+- `difficulty`: One of `'beginner'`, `'intermediate'`, `'advanced'`, `'expert'` (default: `'intermediate'`)
+- `num_compositions`: Number of pieces to generate
+- `length_measures`: Length of each composition in measures
+- `temperature`: Creativity parameter (0.0-1.0)
+
+**Example with different difficulties:**
+
+```python
+# Beginner level - simple rhythms and intervals
+beginner_config = {
+    'instruments': ['piano'],
+    'difficulty': 'beginner',
+    'length_measures': 16
+}
+beginner_gen = MusicGenerator(beginner_config)
+beginner_pieces = beginner_gen.generate(style_profile)
+
+# Expert level - complex rhythms, chords, and wide intervals
+expert_config = {
+    'instruments': ['piano', 'violin', 'cello'],
+    'difficulty': 'expert',
+    'length_measures': 64
+}
+expert_gen = MusicGenerator(expert_config)
+expert_pieces = expert_gen.generate(style_profile)
 ```
 
 ### Sheet Music Creation

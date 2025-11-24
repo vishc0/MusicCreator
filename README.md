@@ -16,6 +16,11 @@ MusicCreator is an AI-powered application that:
 - 🔍 **Composer Research**: Automatically gathers information about composers from online sources
 - 🎼 **Style Analysis**: Uses AI to understand compositional patterns and characteristics
 - 🎹 **Music Generation**: Creates 5 sample compositions in the target composer's style
+- 🎻 **Multiple Instruments**: Support for 20+ instruments (piano, violin, flute, etc.)
+- 📊 **Difficulty Levels**: Generate music for beginner, intermediate, advanced, or expert levels
+- 🎭 **Mood Control**: Specify the mood/tone (happy, sad, dramatic, peaceful, energetic, etc.)
+- ⏱️ **Musical Parameters**: Control time signature, key signature, and tempo
+- 💻 **Software Choice**: Use MuseScore, LilyPond, or auto-detect for sheet music rendering
 - 📄 **Sheet Music**: Generates professional-quality sheet music documents
 - 🎵 **Audio Output**: Produces playable audio files from generated compositions
 
@@ -52,9 +57,50 @@ cp config/config.example.yaml config/config.yaml
 
 #### Command Line
 
-Generate music for a composer:
+**Basic usage:**
 ```bash
 python src/main.py --composer "Edvard Grieg"
+```
+
+**With instruments and difficulty:**
+```bash
+python src/main.py --composer "Mozart" --instruments piano violin --difficulty advanced
+```
+
+**With mood and musical parameters (Advanced):**
+```bash
+python src/main.py --composer "Beethoven" \
+  --instruments piano violin cello \
+  --difficulty expert \
+  --mood dramatic \
+  --time-signature 3/4 \
+  --key-signature "C minor" \
+  --tempo 120 \
+  --software musescore
+```
+
+**More examples:**
+```bash
+# Peaceful beginner piano piece in 6/8 time
+python src/main.py --composer "Debussy" \
+  --instruments piano \
+  --difficulty beginner \
+  --mood peaceful \
+  --time-signature 6/8 \
+  --tempo 72
+
+# Energetic string quartet
+python src/main.py --composer "Haydn" \
+  --instruments violin violin viola cello \
+  --difficulty advanced \
+  --mood energetic
+
+# Romantic woodwind quintet with LilyPond output
+python src/main.py --composer "Brahms" \
+  --instruments flute oboe clarinet bassoon \
+  --difficulty intermediate \
+  --mood romantic \
+  --software lilypond
 ```
 
 #### Web Interface

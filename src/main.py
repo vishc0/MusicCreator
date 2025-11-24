@@ -4,7 +4,8 @@ MusicCreator CLI - Main entry point for the application.
 
 Usage:
     python src/main.py --composer "Edvard Grieg"
-    python src/main.py --composer "Mozart" --output-dir ./outputs
+    python src/main.py --composer "Mozart" --instruments piano violin --difficulty intermediate
+    python src/main.py --composer "Bach" --instruments piano --difficulty advanced --output-dir ./outputs
 """
 
 import argparse
@@ -69,6 +70,20 @@ def main():
         help='Name of the composer (e.g., "Edvard Grieg", "Mozart")'
     )
     parser.add_argument(
+        '--instruments',
+        type=str,
+        nargs='+',
+        default=['piano'],
+        help='Instruments to compose for (e.g., piano violin flute). Multiple instruments can be specified.'
+    )
+    parser.add_argument(
+        '--difficulty',
+        type=str,
+        choices=['beginner', 'intermediate', 'advanced', 'expert'],
+        default='intermediate',
+        help='Difficulty level of the composition (default: intermediate)'
+    )
+    parser.add_argument(
         '--output-dir',
         type=str,
         default='outputs',
@@ -85,6 +100,37 @@ def main():
         default=5,
         help='Number of compositions to generate (default: 5)'
     )
+    
+    # Advanced options
+    advanced = parser.add_argument_group('Advanced Options')
+    advanced.add_argument(
+        '--software',
+        type=str,
+        choices=['musescore', 'lilypond', 'auto'],
+        default='auto',
+        help='Software to use for sheet music rendering (default: auto)'
+    )
+    advanced.add_argument(
+        '--mood',
+        type=str,
+        help='Mood/tone of the music (e.g., happy, melancholic, dramatic, peaceful, energetic)'
+    )
+    advanced.add_argument(
+        '--time-signature',
+        type=str,
+        help='Time signature (e.g., 4/4, 3/4, 6/8). Overrides composer style.'
+    )
+    advanced.add_argument(
+        '--key-signature',
+        type=str,
+        help='Key signature (e.g., "C major", "A minor", "Eb"). Overrides composer style.'
+    )
+    advanced.add_argument(
+        '--tempo',
+        type=int,
+        help='Tempo in BPM (e.g., 120). Overrides composer style.'
+    )
+    
     parser.add_argument(
         '--dry-run',
         action='store_true',
@@ -109,8 +155,40 @@ def main():
     if args.num_compositions:
         config.setdefault('generation', {})['num_compositions'] = args.num_compositions
     
-    logger.info(f"🎵 MusicCreator v{__import__('src').__version__}")
+    # Add instruments and difficulty to config
+    config.setdefault('generation', {})['instruments'] = args.instruments
+    config.setdefault('generation', {})['difficulty'] = args.difficulty
+    
+    # Add advanced options to config
+    if args.mood:
+        config.setdefault('generation', {})['mood'] = args.mood
+    if args.time_signature:
+        config.setdefault('generation', {})['time_signature'] = args.time_signature
+    if args.key_signature:
+        config.setdefault('generation', {})['key'] = args.key_signature
+    if args.tempo:
+        config.setdefault('generation', {})['tempo'] = args.tempo
+    
+    # Sheet music software preference
+    config.setdefault('sheet_music', {})['software'] = args.software
+    
+    logger.info(f"🎵 MusicCreator v0.1.0")
     logger.info(f"📝 Composer: {args.composer}")
+    logger.info(f"🎼 Instruments: {', '.join(args.instruments)}")
+    logger.info(f"📊 Difficulty: {args.difficulty}")
+    
+    # Log advanced options if specified
+    if args.mood:
+        logger.info(f"🎭 Mood: {args.mood}")
+    if args.time_signature:
+        logger.info(f"⏱️  Time Signature: {args.time_signature}")
+    if args.key_signature:
+        logger.info(f"🎹 Key Signature: {args.key_signature}")
+    if args.tempo:
+        logger.info(f"🎼 Tempo: {args.tempo} BPM")
+    if args.software != 'auto':
+        logger.info(f"💻 Software: {args.software}")
+    
     logger.info(f"📁 Output directory: {args.output_dir}")
     
     if args.dry_run:

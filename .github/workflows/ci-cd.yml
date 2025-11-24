@@ -11,6 +11,20 @@ on:
         description: 'Composer name to generate music for'
         required: false
         default: 'Edvard Grieg'
+      instruments:
+        description: 'Instruments (space-separated, e.g., "piano violin")'
+        required: false
+        default: 'piano'
+      difficulty:
+        description: 'Difficulty level'
+        required: false
+        default: 'intermediate'
+        type: choice
+        options:
+          - beginner
+          - intermediate
+          - advanced
+          - expert
 
 jobs:
   test:
@@ -72,7 +86,11 @@ jobs:
       env:
         HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
       run: |
-        python src/main.py --composer "${{ github.event.inputs.composer }}" --output-dir outputs
+        python src/main.py \
+          --composer "${{ github.event.inputs.composer }}" \
+          --instruments ${{ github.event.inputs.instruments }} \
+          --difficulty ${{ github.event.inputs.difficulty }} \
+          --output-dir outputs
     
     - name: Upload generated files
       uses: actions/upload-artifact@v3
