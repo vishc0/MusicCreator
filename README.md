@@ -13,6 +13,7 @@ MusicCreator is an AI-powered application that:
 
 ## Features
 
+- 🌐 **Web Interface**: Beautiful, intuitive interface with sheet music viewer and audio player
 - 🔍 **Composer Research**: Automatically gathers information about composers from online sources
 - 🎼 **Style Analysis**: Uses AI to understand compositional patterns and characteristics
 - 🎹 **Music Generation**: Creates 5 sample compositions in the target composer's style
@@ -21,41 +22,31 @@ MusicCreator is an AI-powered application that:
 - 🎭 **Mood Control**: Specify the mood/tone (happy, sad, dramatic, peaceful, energetic, etc.)
 - ⏱️ **Musical Parameters**: Control time signature, key signature, and tempo
 - 💻 **Software Choice**: Use MuseScore, LilyPond, or auto-detect for sheet music rendering
-- 📄 **Sheet Music**: Generates professional-quality sheet music documents
+- 📄 **Sheet Music**: Generates professional-quality sheet music documents (view in browser!)
 - 🎵 **Audio Output**: Produces playable audio files from generated compositions
+- 💰 **Zero-Cost Deployment**: Multiple free hosting options available
 
 ## Quick Start
 
-### Prerequisites
+### Web Interface (Recommended)
 
-- Python 3.9 or higher
-- Node.js 16 or higher (for web interface)
-- Git
-
-### Installation
-
-1. Clone the repository:
+**Run locally:**
 ```bash
-git clone https://github.com/vishc0/MusicCreator.git
-cd MusicCreator
-```
-
-2. Install dependencies:
-```bash
+# 1. Install dependencies
 pip install -r requirements.txt
+
+# 2. Start web server
+python src/web/app.py
+
+# 3. Open browser
+# Visit: http://localhost:5000
 ```
 
-3. Configure the application:
-```bash
-cp config/config.example.yaml config/config.yaml
-# Edit config.yaml with your settings
-```
+**Deploy for free:**
+- See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for zero-cost hosting options
+- Options: Railway.app, Render.com, Replit, GitHub Pages
 
-4. Set up secrets (see [CONFIGURE.md](docs/CONFIGURE.md))
-
-### Usage
-
-#### Command Line
+### Command Line
 
 **Basic usage:**
 ```bash
@@ -142,10 +133,12 @@ MusicCreator/
 
 ## Documentation
 
-- [Configuration Guide](docs/CONFIGURE.md)
-- [Contributing Guidelines](docs/CONTRIBUTING.md)
-- [Architecture Details](docs/ARCHITECTURE.md)
-- [API Documentation](docs/API.md)
+- 🚀 **[Deployment Guide](docs/DEPLOYMENT.md)** - Zero-cost hosting options
+- ⚙️ **[Configuration Guide](docs/CONFIGURE.md)** - Setup and API configuration
+- 🤝 **[Contributing Guidelines](docs/CONTRIBUTING.md)** - How to contribute
+- 🏗️ **[Architecture Details](docs/ARCHITECTURE.md)** - System design
+- 📖 **[API Documentation](docs/API.md)** - Complete API reference
+- ⚡ **[Quick Reference](docs/QUICK_REFERENCE.md)** - Fast lookup guide
 
 ## Examples
 
